@@ -17,6 +17,7 @@ from AccessLogAnalyzer import *
 from  WDEstimator import *
 from Clustering import *
 from dir2vec import *
+from FolderNameAnalyzer import *
 import csvdb
 
 @click.group()
@@ -281,12 +282,14 @@ def create():
 
     cluster = ch.get_cluster()
 
-    ## 作業別    
+    ## 作業別
     cluster_path = dst + "/" + settings["VIRTUAL_FOLDER_NAME"]["CLUSTERING"] + "/"
     if os.path.exists(cluster_path): shutil.rmtree(cluster_path)
     if not os.path.exists(cluster_path): os.makedirs(cluster_path)
+    foldernameanalyzer = FolderNameAnalyzer(features)
     for i,c in enumerate(cluster):
-        cpath = cluster_path + "/Task" + str(i)
+        foldername = foldernameanalyzer.virtual_folder_name_analyze(c)
+        cpath = cluster_path + foldername
         if not os.path.exists(cpath): os.makedirs(cpath)
         for d in c:
             if not os.path.exists(cpath + "/" + d.split("/")[-1]): os.symlink(d, cpath + "/" + d.split("/")[-1])
