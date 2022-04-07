@@ -288,7 +288,7 @@ def create():
     if not os.path.exists(cluster_path): os.makedirs(cluster_path)
     foldernameanalyzer = FolderNameAnalyzer(features)
     for i,c in enumerate(cluster):
-        foldername = foldernameanalyzer.virtual_folder_name_analyze(c)
+        foldername = foldernameanalyzer.virtual_folder_name_analyze2(c)  ##この行を書き換えて，使用するフォルダ名の付与手法を決定する．1-4まで有．
         cpath = cluster_path + foldername
         if not os.path.exists(cpath): os.makedirs(cpath)
         for d in c:
