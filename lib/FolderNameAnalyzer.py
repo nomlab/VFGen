@@ -2,6 +2,7 @@ import os
 import csv
 import time
 import subprocess
+import yaml
 app_home = os.path.abspath(os.path.join( os.path.dirname(os.path.abspath(__file__)) , ".." ))
 
 class FolderNameAnalyzer:
@@ -28,7 +29,7 @@ class FolderNameAnalyzer:
             #self.working_directory_extensions(wd, sort_wd_extensions)
         sort_wds_extensions = sorted(wds_extensions.items(), key=lambda x:x[1], reverse=True)
         self.working_directorys_extensions(working_directorys, sort_wds_extensions)
-        folder_name = self.folder_name_using_extension_database(sort_wds_extensions)
+        folder_name = self.folder_name_using_extension_database(sort_wds_extensions, work_content_num=1)[0]
         return folder_name
 
     # 仮想フォルダにあるWD単位で，ファイルアクセス履歴の拡張子を用いてフォルダ名を付与
@@ -44,7 +45,7 @@ class FolderNameAnalyzer:
                 else:
                     wd_extensions[ext] = 1
             sort_wd_extensions = sorted(wd_extensions.items(), key=lambda x:x[1], reverse=True)
-            foldername_tmp = self.folder_name_using_extension_database(sort_wd_extensions)
+            foldername_tmp = self.folder_name_using_extension_database(sort_wd_extensions, work_content_num=1)[0]
             if foldername_list.get(foldername_tmp):
                 foldername_list[foldername_tmp] += 1
             else:
@@ -64,7 +65,7 @@ class FolderNameAnalyzer:
             del exts[30:]
         except:
             pass
-        foldername = self.folder_name_using_extension_database(exts)
+        foldername = self.folder_name_using_extension_database(exts, work_content_num=1)[0]
         return foldername
 
     # 仮想フォルダにあるWD単位で，，静的ファイルの拡張子を用いてフォルダ名を付与
@@ -80,7 +81,7 @@ class FolderNameAnalyzer:
             except:
                 pass
 
-            foldername_tmp = self.folder_name_using_extension_database(exts)
+            foldername_tmp = self.folder_name_using_extension_database(exts, work_content_num=1)[0]
             if foldername_list.get(foldername_tmp):
                 foldername_list[foldername_tmp] += 1
             else:
@@ -98,7 +99,9 @@ class FolderNameAnalyzer:
             f.write(str(working_directory) + "," + str(extensions) + "\n")
 
     # 拡張子が一番多いものから順にデータベースと照合し，フォルダ名を付与
-    def folder_name_using_extension_database(self, wds_extensions):
+    def folder_name_using_extension_database(self, wds_extensions, *, work_content_num = yaml.load(open(app_home + '/settings.yml','r'), Loader=yaml.SafeLoader)['SEMANTIC_FILE_SETTINGS']['work_content_num']
+):
+        work_content_list = []
         with open(app_home + "/db/extension_db.csv", "r") as f:
             reader = csv.reader(f)
             dbs = list(reader)
@@ -107,5 +110,11 @@ class FolderNameAnalyzer:
                 i+=1
                 for db in dbs:
                     if wds_extension[0] == db[0]:
-                        return db[1]
-        return "None"
+                        work_content_list.append(db[1])
+                        if len(work_content_list) >= work_content_num:
+                            return work_content_list
+
+        if work_content_list == []:
+            work_content_list.append("None")
+
+        return work_content_list

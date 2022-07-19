@@ -22,3 +22,5 @@ CLUSTERING_SETTINGS:
   pca_nconponents: 16
   div_threshold: 0.4
   save_dendrogram: False
+SEMANTIC_FILE_SETTINGS:
+  work_content_num: 3
