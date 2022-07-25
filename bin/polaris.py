@@ -237,7 +237,8 @@ def create():
     db = csvdb.Database(settings["DB_PATH"])
     wds = {}
     for i, l in enumerate(db.data):
-        wds[l[0]] = eval(l[1])
+        if os.path.exists(l[0]):
+            wds[l[0]] = eval(l[1])
 
     ## 使用時期別
     recent_path = dst + "/" + settings["VIRTUAL_FOLDER_NAME"]["RECENT"]
@@ -266,7 +267,8 @@ def create():
 
     features = {}
     for i, l in enumerate(db.data):
-        features[l[0]] = eval(l[2])
+        if os.path.exists(l[0]):
+            features[l[0]] = eval(l[2])
 
     pca_n = settings['CLUSTERING_SETTINGS']['pca_nconponents']    
     vectorizer = Dir2Vec(list(features.keys()), None, pca_ncomponents=pca_n)
@@ -292,7 +294,11 @@ def create():
         cpath = cluster_path + foldername
         if not os.path.exists(cpath): os.makedirs(cpath)
         for d in c:
-            if not os.path.exists(cpath + "/" + d.split("/")[-1]): os.symlink(d, cpath + "/" + d.split("/")[-1])
+            try:
+                if not os.path.exists(cpath + "/" + d.split("/")[-1]): os.symlink(d, cpath + "/" + d.split("/")[-1])
+            except:
+                print("Warning:" + path + "/" + d.split("/")[-1] + " cannot make symlink")
+                logger.warning(path + "/" + d.split("/")[-1] + " cannot make symlink")
 
     logger.info("Create Virtual Folders")
 
