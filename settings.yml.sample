@@ -24,3 +24,4 @@ CLUSTERING_SETTINGS:
   save_dendrogram: False
 SEMANTIC_FILE_SETTINGS:
   work_content_num: 3
+  wd_extension_num: 3
