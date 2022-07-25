@@ -8,6 +8,8 @@ app_home = os.path.abspath(os.path.join( os.path.dirname(os.path.abspath(__file_
 class FolderNameAnalyzer:
     def __init__(self, features):
         self.features = features
+        settings = yaml.load(open(app_home + '/settings.yml','r'), Loader=yaml.SafeLoader)
+        self.wd_extension_num = settings["SEMANTIC_FILE_SETTINGS"]["wd_extension_num"]
 
     # 仮想フォルダ単位で，ファイルアクセス履歴の拡張子を用いてフォルダ名を付与
     def virtual_folder_name_analyze(self, working_directorys):
@@ -89,6 +91,26 @@ class FolderNameAnalyzer:
         sort_foldername_list = sorted(foldername_list.items(), key=lambda x:x[1], reverse=True)
         foldername = list(sort_foldername_list)[0][0]
         return foldername
+
+    def wd_extensions_and_work_contents(self, wd_name):
+        work_contents = []
+        wd_extensions = {}
+        ext_groups = self.features[wd_name]
+        for ext_group in ext_groups:
+            ext = ext_group.split("TO")[0]
+            if wd_extensions.get(ext):
+                wd_extensions[ext] += 1
+            else:
+                wd_extensions[ext] = 1
+        sort_wd_extensions = sorted(wd_extensions.items(), key=lambda x:x[1], reverse=True)
+        work_contents = self.folder_name_using_extension_database(sort_wd_extensions)
+        if len(sort_wd_extensions) >= self.wd_extension_num:
+            sort_wd_extensions = sort_wd_extensions[:self.wd_extension_num]
+        extension_list = []
+        for e in sort_wd_extensions:
+            extension_list.append(e[0])
+
+        return extension_list, work_contents
 
     def working_directorys_extensions(self, working_directorys, wds_extensions):
         with open(app_home + "/db/working_directorys_extensions.csv", "a") as f:

@@ -296,6 +296,37 @@ def create():
 
     logger.info("Create Virtual Folders")
 
+    ## タグベースの検索システム
+    ### ディレクトリパスからタグを付与
+    home_dir = settings["CFAL_SETTINGS"]["HOME_DIRECTORY"]
+    for wd in wds:
+        tag_by_directory_path = list(set(wd.split("/")[:-1]) - set(home_dir.split("/")))
+        for tag in tag_by_directory_path:
+            subprocess.call(["tmsu", "tag", str(wd), str(tag)])
+
+    ### 使用時期の情報をタグとして付与
+    for wd in wds:
+        years = []
+        months = []
+        for at in wds[wd]:
+            if not at[0].month in months:
+                months.append(at[0].month)
+            if not at[0].year in years:
+                years.append(at[0].year)
+        for tag in years:
+            subprocess.call(["tmsu", "tag", str(wd), str(tag)])
+        for tag in months:
+            subprocess.call(["tmsu", "tag", str(wd), str(tag)])
+
+    ### WDの拡張子と作業内容をタグとして付与
+    for wd in wds:
+        wd_extensions, work_contents = foldernameanalyzer.wd_extensions_and_work_contents(wd)
+        ### 拡張子
+        for tag in wd_extensions:
+            subprocess.call(["tmsu", "tag", str(wd), str(tag)])
+        ### 作業内容
+        for tag in work_contents:
+            subprocess.call(["tmsu", "tag", str(wd), str(tag)])
 
 def main():
     cmd()
