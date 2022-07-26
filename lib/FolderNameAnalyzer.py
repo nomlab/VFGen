@@ -131,7 +131,7 @@ class FolderNameAnalyzer:
             for wds_extension in list(wds_extensions):
                 i+=1
                 for db in dbs:
-                    if wds_extension[0] == db[0]:
+                    if wds_extension[0] == db[0] and not db[1] in work_content_list:
                         work_content_list.append(db[1])
                         if len(work_content_list) >= work_content_num:
                             return work_content_list
