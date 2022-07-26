@@ -303,12 +303,21 @@ def create():
     logger.info("Create Virtual Folders")
 
     ## タグベースの検索システム
+    is_save_tag_list = settings['SEMANTIC_FILE_SETTINGS']['save_tag_list']
+    if is_save_tag_list:
+        tag_list = {}
+        for wd in wds:
+            tag_list[wd] = []
+
     ### ディレクトリパスからタグを付与
     home_dir = settings["CFAL_SETTINGS"]["HOME_DIRECTORY"]
     for wd in wds:
         tag_by_directory_path = list(set(wd.split("/")[:-1]) - set(home_dir.split("/")))
         for tag in tag_by_directory_path:
             subprocess.call(["tmsu", "tag", str(wd), str(tag)])
+
+        if is_save_tag_list:
+            tag_list[wd].append(tag_by_directory_path)
 
     ### 使用時期の情報をタグとして付与
     for wd in wds:
@@ -324,6 +333,10 @@ def create():
         for tag in months:
             subprocess.call(["tmsu", "tag", str(wd), str(tag)])
 
+        if is_save_tag_list:
+            tag_list[wd].append(years)
+            tag_list[wd].append(months)
+
     ### WDの拡張子と作業内容をタグとして付与
     for wd in wds:
         wd_extensions, work_contents = foldernameanalyzer.wd_extensions_and_work_contents(wd)
@@ -333,6 +346,15 @@ def create():
         ### 作業内容
         for tag in work_contents:
             subprocess.call(["tmsu", "tag", str(wd), str(tag)])
+
+        if is_save_tag_list:
+            tag_list[wd].append(wd_extensions)
+            tag_list[wd].append(work_contents)
+
+    if is_save_tag_list:
+        for wd in tag_list:
+            ### タグをタブで分割して表示
+            print(str(wd) + ":\t" + str(tag_list[wd]).replace('],', '],\t'))
 
 def main():
     cmd()

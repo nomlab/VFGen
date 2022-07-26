@@ -25,3 +25,4 @@ CLUSTERING_SETTINGS:
 SEMANTIC_FILE_SETTINGS:
   work_content_num: 3
   wd_extension_num: 3
+  save_tag_list: True
