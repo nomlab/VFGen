@@ -255,14 +255,14 @@ def create():
                     try:
                         if not os.path.exists(path + "/" + d.split("/")[-1]): os.symlink(d, path + "/" + d.split("/")[-1])
                     except:
-                        print("Warning:" + path + "/" + d.split("/")[-1] + " cannot make symlink")
+                        print("Warning:" + path + "/" + d.split("/")[-1] + " cannot make symlink", file=sys.stderr)
                         logger.warning(path + "/" + d.split("/")[-1] + " cannot make symlink")
                 # 最近
                 if at[0] > (datetime.datetime.now() - datetime.timedelta(days=21)):
                     try:
                         if not os.path.exists(recent_path + "/" + d.split("/")[-1]): os.symlink(d, recent_path + "/" + d.split("/")[-1])
                     except:
-                        print("Warning:" + recent_path + "/" + d.split("/")[-1] + " cannot make symlink")
+                        print("Warning:" + recent_path + "/" + d.split("/")[-1] + " cannot make symlink", file=sys.stderr)
                         logger.warning(recent_path + "/" + d.split("/")[-1] + " cannot make symlink")
 
     features = {}
@@ -297,7 +297,7 @@ def create():
             try:
                 if not os.path.exists(cpath + "/" + d.split("/")[-1]): os.symlink(d, cpath + "/" + d.split("/")[-1])
             except:
-                print("Warning:" + path + "/" + d.split("/")[-1] + " cannot make symlink")
+                print("Warning:" + path + "/" + d.split("/")[-1] + " cannot make symlink", file=sys.stderr)
                 logger.warning(path + "/" + d.split("/")[-1] + " cannot make symlink")
 
     logger.info("Create Virtual Folders")
