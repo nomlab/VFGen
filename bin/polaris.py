@@ -341,9 +341,13 @@ def create():
     for wd in wds:
         wd_extensions, work_contents = foldernameanalyzer.wd_extensions_and_work_contents(wd)
         ### 拡張子
+        if "None" in wd_extensions:
+            wd_extensions.remove("None")
         for tag in wd_extensions:
             subprocess.call(["tmsu", "tag", str(wd), str(tag)])
         ### 作業内容
+        if "None" in work_contents:
+            work_contents.remove("None")
         for tag in work_contents:
             subprocess.call(["tmsu", "tag", str(wd), str(tag)])
 
