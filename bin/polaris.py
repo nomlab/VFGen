@@ -356,9 +356,10 @@ def create():
             tag_list[wd].append(work_contents)
 
     if is_save_tag_list:
-        for wd in tag_list:
+        print("ワーキングディレクトリのディレクトリパス\tディレクトリパスから付与されたタグ情報\t使用年\t使用月\t履歴から取得したファイル拡張子\t作業内容")
+        for i, wd in enumerate(tag_list):
             ### タグをタブで分割して表示
-            print(str(wd) + ":\t" + str(tag_list[wd]).replace('],', '],\t'))
+            print(str(i+1) + "\t" + str(wd) + ":\t" + str(tag_list[wd]).replace('],', '],\t'))
 
 def main():
     cmd()
