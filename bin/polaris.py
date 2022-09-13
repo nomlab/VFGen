@@ -314,7 +314,7 @@ def create():
     for wd in wds:
         tag_by_directory_path = list(set(wd.split("/")[:-1]) - set(home_dir.split("/")))
         for tag in tag_by_directory_path:
-            subprocess.call(["tmsu", "tag", str(wd), str(tag)])
+            subprocess.call(["tmsu", "tag", str(wd), "path=" + str(tag)])
 
         if is_save_tag_list:
             tag_list[wd].append(tag_by_directory_path)
@@ -329,9 +329,9 @@ def create():
             if not at[0].year in years:
                 years.append(at[0].year)
         for tag in years:
-            subprocess.call(["tmsu", "tag", str(wd), str(tag)])
+            subprocess.call(["tmsu", "tag", str(wd), "year=" + str(tag)])
         for tag in months:
-            subprocess.call(["tmsu", "tag", str(wd), str(tag)])
+            subprocess.call(["tmsu", "tag", str(wd), "month=" + str(tag)])
 
         if is_save_tag_list:
             tag_list[wd].append(years)
@@ -344,12 +344,12 @@ def create():
         if "None" in wd_extensions:
             wd_extensions.remove("None")
         for tag in wd_extensions:
-            subprocess.call(["tmsu", "tag", str(wd), str(tag)])
+            subprocess.call(["tmsu", "tag", str(wd), "ext=" + str(tag)])
         ### 作業内容
         if "None" in work_contents:
             work_contents.remove("None")
         for tag in work_contents:
-            subprocess.call(["tmsu", "tag", str(wd), str(tag)])
+            subprocess.call(["tmsu", "tag", str(wd), "content=" + str(tag)])
 
         if is_save_tag_list:
             tag_list[wd].append(wd_extensions)
