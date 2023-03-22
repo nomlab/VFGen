@@ -23,6 +23,8 @@ class Dir2Vec:
                     ext1 = re.sub(re.compile("[!-/:-@[-`{-~]"), '', self.logs[i].ext)
                     ext2 = re.sub(re.compile("[!-/:-@[-`{-~]"), '', self.logs[i+1].ext)
                     em = np.append(em,ext1+"TO"+ext2)
+                last_ext = re.sub(re.compile("[!-/:-@[-`{-~]"), '', self.logs[tl[1]].ext)
+                em = np.append(em, last_ext+"TO"+"End")
             self.ext_pairs[d] = em
         return self.ext_pairs
 
