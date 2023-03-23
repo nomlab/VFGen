@@ -303,8 +303,8 @@ def create():
     logger.info("Create Virtual Folders")
 
     ## タグベースの検索システム
-    is_save_tag_list = settings['SEMANTIC_FILE_SETTINGS']['save_tag_list']
-    if is_save_tag_list:
+    is_print_tag_list = settings['SEMANTIC_FILE_SETTINGS']['print_tag_list']
+    if is_print_tag_list:
         tag_list = {}
         for wd in wds:
             tag_list[wd] = []
@@ -316,7 +316,7 @@ def create():
         for tag in tag_by_directory_path:
             subprocess.call(["tmsu", "tag", str(wd), "path=" + str(tag)])
 
-        if is_save_tag_list:
+        if is_print_tag_list:
             tag_list[wd].append(tag_by_directory_path)
 
     ### 使用時期の情報をタグとして付与
@@ -333,7 +333,7 @@ def create():
         for tag in months:
             subprocess.call(["tmsu", "tag", str(wd), "month=" + str(tag)])
 
-        if is_save_tag_list:
+        if is_print_tag_list:
             tag_list[wd].append(years)
             tag_list[wd].append(months)
 
@@ -351,11 +351,11 @@ def create():
         for tag in work_contents:
             subprocess.call(["tmsu", "tag", str(wd), "content=" + str(tag)])
 
-        if is_save_tag_list:
+        if is_print_tag_list:
             tag_list[wd].append(wd_extensions)
             tag_list[wd].append(work_contents)
 
-    if is_save_tag_list:
+    if is_print_tag_list:
         print("ワーキングディレクトリのディレクトリパス\tディレクトリパスから付与されたタグ情報\t使用年\t使用月\t履歴から取得したファイル拡張子\t作業内容")
         for i, wd in enumerate(tag_list):
             ### タグをタブで分割して表示
