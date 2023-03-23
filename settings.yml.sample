@@ -16,7 +16,7 @@ VIRTUAL_FOLDER_NAME:
   RECENT: 最近使用したWD
 WD_DISCOVER_SETTINGS:
   weight: [15, 11, 7, 3, 1]
-  threshold: 27
+  move_threshold: 27
   density_threshold: 0.3
 COMPILE_DISCOVER_SETTINGS:
   time_threshold: 1
