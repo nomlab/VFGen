@@ -11,12 +11,14 @@
 │   ├── polaris.py
 │   └── reset-db.sh
 ├── db
+│   ├── extension_db.csv
 │   └── wds.csv
 ├── docs
 │   └── technical_memo.md
 ├── lib
 │   ├── AccessLogAnalyzer.py
 │   ├── Clustering.py
+│   ├── FolderNameAnalyzer.py
 │   ├── WDEstimator.py
 │   ├── __init__.py
 │   ├── csvdb.py
@@ -128,6 +130,7 @@ Options:
 ## `db/`
 ### ファイル一覧
 + `wds.csv` (システムが生成)
++ `extension_db.csv` (ファイル拡張子と作業内容との対応表)
 
 ### `wds.csv`
 + 推定されたワーキングディレクトリ，ワーキングディレクトリの使用期間，ワーキングディレクトリの特徴量をCSVで保存．
@@ -137,11 +140,12 @@ Options:
   + 2列目: datetime型のタプルの配列で使用期間を示している．[(s1, e1), (s2, e2)]のように．
   + 3列目: 隣接する拡張子の組．`mdTOmd`はmd→mdを示している．
 	+ 拡張子に`TO`という文字列が含まれていれば不具合を起こす可能性あり．
+  + 作業の最後には`XXXTOEnd`という文字列が記録される．
 
 ```
 /home/ryota/Documents/record/065nom,
 [(datetime.datetime(2020, 2, 19, 10, 54, 30), datetime.datetime(2020, 2, 19, 11, 35, 44))],
-['mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd']
+['mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOmd', 'mdTOEnd']
 ```
 
 
@@ -208,6 +212,11 @@ Options:
     ch.div(div_threshold)
 	cluster = ch.get_cluster()
 	```
+
+### `FolderNameAnalyzer.py`
++ ワーキングディレクトリの作業内容に関するフォルダ名を決定する．
++ また，ワーキングディレクトリに付与する，作業内容に関するタグを決定する．
++ 作業内容は`db/extension_db.csv`に保存しているデータベースを参照し，決定する．
 
 ### `csvdb.py`
 + CSV形式の `wds.csv`　をデータベースとして扱う．
