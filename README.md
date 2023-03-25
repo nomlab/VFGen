@@ -78,10 +78,17 @@ $ pip install -r requirements.txt
   + `weight` : 階層の深さによる重み．例) [7,5,3,1] は，1-2層目が7，2-3層目が5...4層目以降は1
   + `move_threshold` : 分割の閾値
   + `density_threshold` : 機械的なファイル生成とみなすファイル更新密度の閾値
++ `COMPILE_DISCOVER_SETTINGS` : コンパイルを必要とする作業を決定する処理に関する設定
+  + `time_threshold` : ファイル更新の間隔の時間の閾値
+  + `frequency_threshold` : ファイル更新回数の閾値
 + `CLUSTERING_SETTINGS` : クラスタリングに関する設定
   + `pca_nconponents` : 主成分分析による次元圧縮の次元数
   + `div_threshold` : 階層的クラスタリングによるデンドログラムを分割する閾値
   + `save_dendrogram` : クラスタリング時にデンドログラムを保存するかどうか（True/False）
++ `SEMANTIC_FILE_SETTINGS` : ワーキングディレクトリに付与するタグに関する設定
+  + `work_content_num` : ワーキングディレクトリの作業内容に関するタグの数の上限
+  + `wd_extension_num` : ワーキングディレクトリで作業に使用した，ファイル拡張子に関するタグの上限
+  + `print_tag_list` : ワーキングディレクトリに付与されたタグの結果を表示するかどうか(True/False)
   
 ## Launch
 ### 初回起動
