@@ -39,7 +39,7 @@ $ brew install fswatch
 ## Install polaris
 ### Install using pipenv (reccomend)
 ```
-$ git clone git@github.com:Ryota0312/polaris.git
+$ git clone git@github.com:nomlab/polaris.git
 $ cd polaris
 $ pipenv install
 ```
@@ -49,7 +49,7 @@ $ pipenv install
 
 ### Install as a global
 ```
-$ git clone git@github.com:Ryota0312/polaris.git
+$ git clone git@github.com:nomlab/polaris.git
 $ cd polaris
 $ pip install -r requirements.txt
 ```
